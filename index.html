@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem E-SPPD & Surat Tugas - Desa Pulias</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #090d16;
+            color: #f3f4f6;
+            min-height: 100vh;
+        }
+
+        /* 3D Glassmorphism Styles */
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px) scale(1.01);
+            border-color: rgba(59, 130, 246, 0.4);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 20px rgba(59, 130, 246, 0.2);
+        }
+
+        .btn-3d-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .btn-3d-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .btn-3d-emerald {
+            background: linear-gradient(135deg, #10b981 0%, #047857 100%);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .btn-3d-emerald:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .btn-3d-purple {
+            background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .btn-3d-purple:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .glass-input {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            transition: all 0.2s ease;
+        }
+
+        .glass-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3), inset 0 1px 2px rgba(0, 0, 0, 0.5);
+            background: rgba(15, 23, 42, 0.8);
+        }
+
+        /* Ambient Glow Objects */
+        .glow-sphere-1 {
+            position: fixed;
+            top: -10%;
+            left: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, rgba(0,0,0,0) 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .glow-sphere-2 {
+            position: fixed;
+            bottom: -10%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.12) 0%, rgba(0,0,0,0) 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.6);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* PRINT MEDIA ENGINE (RESPECT FORMAL LEGAL STANDARDS) */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #printArea, #printArea * {
+                visibility: visible;
+            }
+            #printArea {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                margin: 0;
+                padding: 10mm 15mm;
+                font-family: 'Times New Roman', Times, serif !important;
+                color: black !important;
+                background: white !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            
+            @page {
+                size: 215.9mm 355.6mm portrait;
+                margin: 15mm 15mm 15mm 20mm;
+            }
+
+            @page landscape-legal {
+                size: 355.6mm 215.9mm landscape;
+                margin: 15mm;
+            }
+
+            .print-landscape {
+                page: landscape-legal;
+            }
+        }
+
+        .times-font {
+            font-family: 'Times New Roman', Times, serif;
+        }
+        .table-border, .table-border th, .table-border td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body class="relative overflow-x-hidden">
+
+    <!-- Ambient Glowing Spheres -->
+    <div class="glow-sphere-1"></div>
+    <div class="glow-sphere-2"></div>
+
+    <div class="relative z-10 flex flex-col min-h-screen">
+        <!-- Header / Navbar 3D -->
+        <nav class="glass-panel border-b border-gray-800/50 sticky top-0 z-40 no-print">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/30 border border-white/20">
+                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-slate-400">
+                            PEMERINTAH DESA PULIAS
+                        </h1>
+                        <p class="text-xs font-semibold text-blue-400 tracking-wider uppercase">Sistem E-SPPD & Surat Tugas Digital</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="hidden md:flex flex-col text-right mr-2">
+                        <span class="text-xs font-bold text-gray-300">Kecamatan Ogodeide</span>
+                        <span class="text-[10px] text-gray-500">Kabupaten Tolitoli</span>
+                    </div>
+                    <span class="px-3 py-1.5 rounded-xl bg-blue-500/10 border border-blue-500/30 text-blue-400 text-xs font-bold shadow-inner">
+                        v2.5 3D Edition
+                    </span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content Container -->
+        <main class="flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-8 no-print">
+
+            <!-- Stats Bar (3D Cards) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                <div class="glass-card rounded-2xl p-5 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-medium text-gray-400">Total Perjalanan Dinas</p>
+                        <h3 class="text-3xl font-extrabold text-white mt-1" id="statTotal">0</h3>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl p-5 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-medium text-gray-400">Tahun Anggaran</p>
+                        <h3 class="text-3xl font-extrabold text-white mt-1">2026</h3>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl p-5 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-medium text-gray-400">Tujuan Terpopuler</p>
+                        <h3 class="text-lg font-bold text-white mt-1 truncate max-w-[130px]" id="statTopTujuan">Tolitoli</h3>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl p-5 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-medium text-gray-400">Status Database</p>
+                        <h3 class="text-lg font-bold text-emerald-400 mt-1">Lokal Tersimpan</h3>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"></path></svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Control & Action Bar -->
+            <div class="glass-panel rounded-3xl p-6 border border-gray-800">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5 mb-6">
+                    <div>
+                        <h2 class="text-xl font-extrabold text-white tracking-wide">Daftar Perjalanan Dinas</h2>
+                        <p class="text-xs text-gray-400 mt-1">Kelola arsip SPPD, Surat Tugas, dan cetak dokumen fisik resmi desa.</p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-3">
+                        <button onclick="openForm()" class="btn-3d-emerald text-white px-5 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                            Tambah Perjalanan
+                        </button>
+                        <button onclick="printRekapitulasi()" class="btn-3d-purple text-white px-5 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                            Cetak Rekapitulasi
+                        </button>
+                        
+                        <div class="h-8 w-px bg-gray-800 hidden sm:block"></div>
+
+                        <button onclick="exportData()" class="glass-card hover:bg-white/10 text-gray-300 px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2">
+                            💾 Backup JSON
+                        </button>
+                        <label class="glass-card hover:bg-white/10 text-gray-300 px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 cursor-pointer">
+                            📂 Restore
+                            <input type="file" id="importFile" accept=".json" onchange="importData(event)" class="hidden">
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Live Search Bar -->
+                <div class="relative mb-6">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </div>
+                    <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Cari berdasarkan nama pejabat, maksud tugas, atau nomor surat..." class="glass-input w-full pl-11 pr-4 py-3 rounded-2xl text-sm placeholder-gray-500">
+                </div>
+
+                <!-- 3D Table Container -->
+                <div class="overflow-x-auto rounded-2xl border border-gray-800/80">
+                    <table class="w-full text-left text-sm text-gray-300">
+                        <thead class="bg-slate-900/90 text-gray-400 uppercase text-[11px] font-bold tracking-wider border-b border-gray-800">
+                            <tr>
+                                <th class="p-4">No</th>
+                                <th class="p-4">Pejabat / Pegawai</th>
+                                <th class="p-4">Maksud Perjalanan</th>
+                                <th class="p-4">Tujuan</th>
+                                <th class="p-4">Tgl Berangkat & Kembali</th>
+                                <th class="p-4">No. Surat / SPPD</th>
+                                <th class="p-4 text-center">Cetak Dokumen Physical</th>
+                                <th class="p-4 text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sppdTableBody" class="divide-y divide-gray-800/50">
+                            <!-- JS Inject -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Form Input (3D Styled Glass) -->
+    <div id="formModal" class="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden z-50 no-print">
+        <div class="glass-panel border border-white/10 rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 md:p-8 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-4 mb-6">
+                <div>
+                    <h3 class="text-xl font-bold text-white" id="modalTitle">Form Input Data Perjalanan Dinas</h3>
+                    <p class="text-xs text-gray-400 mt-0.5">Lengkapi parameter dokumen untuk komputasi cetak otomatis</p>
+                </div>
+                <button onclick="closeForm()" class="w-10 h-10 rounded-xl bg-gray-800/50 hover:bg-gray-700 text-gray-400 hover:text-white flex items-center justify-center text-xl transition">&times;</button>
+            </div>
+            
+            <form id="sppdForm" onsubmit="saveData(event)" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <input type="hidden" id="editIndex">
+
+                <!-- Section 1 -->
+                <div class="col-span-1 md:col-span-2 bg-blue-500/10 border border-blue-500/20 p-3 rounded-xl font-bold text-blue-400 text-xs uppercase tracking-wider">
+                    1. Nomor Dokumen & Identitas Desa
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1.5">Nama Desa</label>
+                    <input type="text" id="namaDesa" value="PULIAS" required class="glass-input w-full rounded-xl p-3 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1.5">Tahun Anggaran</label>
+                    <input type="text" id="tahunAnggaran" value="2026" required class="glass-input w-full rounded-xl p-3 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1.5">Nomor Surat Tugas</label>
+                    <input type="text" id="noSuratTugas" placeholder="090 / ... / Pemdes" required class="glass-input w-full rounded-xl p-3 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1.5">Nomor SPPD</label>
+                    <input type="text" id="noSppd" placeholder="094 / ... / Pemdes" required class="glass-input w-full rounded-xl p-3 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1.5">Tanggal Surat Tugas / SPPD</label>
+                    <input type="date" id="tglSuratTugas" required class="glass-input w-full rounded-xl p-3 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1.5">Dasar Surat / Undangan</label>
+                    <input type="text" id="dasarSurat" placeholder="Surat Undangan Camat Ogodeide Nomor..." class="glass-input w-full rounded-xl p-3 text-sm">
+                </div>
+
+                <!-- Section 2 -->
+                <div class="col-span-1 md:col-span-2 bg-blue-500/10 border border-blue-500/20 p-3 rounded-xl font-bold text-blue-400 text-xs uppercase tracking-wider mt-2">
+                    2. Pejabat / Pegawai Yang Diperintah
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1.5">Nama Pejabat / Pegawai</label>
+                    <input type="text" id="namaPejabat" placeholder="Nama Lengkap" required class="glass-input w-full rounded-xl p-3 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1.5">Jabatan</label>
+                    <input type="text" id="jabatan" placeholder="Kasi Pemerintahan / Kaur..." required class="glass-input w-full rounded-xl p-3 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1.5">Pangkat & Golongan</label>
+                    <input type="text" id="pangkatGol" value="-" class="glass-input w-full rounded-xl p-3 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1.5">Tingkat Perjalanan Dinas</label>
+                    <input type="text" id="tingkatSppd" value="Tingkat Desa/Kecamatan" class="glass-input w-full rounded-xl p-3 text-sm">
+                </div>
+
+                <!-- Section 3 -->
+                <div class="col-span-1 md:col-span-2 bg-blue-500/10 border border-blue-500/20 p-3 rounded-xl font-bold text-blue-400 text-xs uppercase tracking-wider mt-2">
+                    3. Rincian Perjalanan Dinas
+                </div>
+                <div class="col-span-1 md:col-span-2">
+                    <label class="block text-xs font-semibold text-gray-300 mb-1.5">Maksud / Tujuan Perjalanan Dinas</label>
+                    <textarea id="maksudPerjalanan" rows="2" placeholder="Konsultasi Perencanaan Anggaran Desa ke..." required class="glass-input w-full rounded-xl p-3 text-sm"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1.5">Tempat Berangkat</label>
+                    <input type="text" id="tempatBerangkat" value="Desa Pulias" required class="glass-input w-full rounded-xl p-3 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1.5">Tempat Tujuan</label>
+                    <input type="text" id="tempatTujuan" placeholder="Tolitoli / Nalu" required class="glass-input w-full rounded-xl p-3 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1.5">Tanggal Berangkat</label>
+                    <input type="date" id="tglBerangkat" required class="glass-input w-full rounded-xl p-3 text-sm" onchange="hitungLama()">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1.5">Tanggal Kembali</label>
+                    <input type="date" id="tglKembali" required class="glass-input w-full rounded-xl p-3 text-sm" onchange="hitungLama()">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1.5">Lamanya Perjalanan Dinas</label>
+                    <input type="text" id="lamaPerjalanan" readonly class="glass-input w-full rounded-xl p-3 text-sm font-bold bg-slate-900/90 text-blue-400">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1.5">Alat Angkutan</label>
+                    <input type="text" id="alatAngkut" value="DARAT" class="glass-input w-full rounded-xl p-3 text-sm">
+                </div>
+
+                <!-- Section 4 -->
+                <div class="col-span-1 md:col-span-2 bg-blue-500/10 border border-blue-500/20 p-3 rounded-xl font-bold text-blue-400 text-xs uppercase tracking-wider mt-2">
+                    4. Laporan Perjalanan Dinas
+                </div>
+                <div class="col-span-1 md:col-span-2">
+                    <label class="block text-xs font-semibold text-gray-300 mb-1.5">Hasil Perjalanan Dinas</label>
+                    <textarea id="hasilPerjalanan" rows="3" placeholder="Tuliskan poin-poin hasil pelaksanaan tugas..." class="glass-input w-full rounded-xl p-3 text-sm"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1.5">Tanggal Laporan Perjalanan Dinas</label>
+                    <input type="date" id="tglLaporan" class="glass-input w-full rounded-xl p-3 text-sm">
+                </div>
+
+                <!-- Form Action Buttons -->
+                <div class="col-span-1 md:col-span-2 flex justify-end gap-3 border-t border-gray-800 pt-5 mt-3">
+                    <button type="button" onclick="closeForm()" class="glass-card hover:bg-gray-800 text-gray-300 px-6 py-2.5 rounded-xl text-sm font-semibold">Batal</button>
+                    <button type="submit" class="btn-3d-primary text-white px-8 py-2.5 rounded-xl text-sm font-bold">Simpan Data</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Container Area Cetak Spesifik (Standard Black & White Print Layout) -->
+    <div id="printArea" class="times-font hidden"></div>
+
+    <script>
+        let db = JSON.parse(localStorage.getItem('sppd_db')) || [];
+
+        function renderTable(dataToRender = db) {
+            const tbody = document.getElementById('sppdTableBody');
+            tbody.innerHTML = '';
+            
+            // Update Stat Widgets
+            document.getElementById('statTotal').innerText = db.length;
+            
+            if(db.length > 0) {
+                const tMap = {};
+                db.forEach(x => { tMap[x.tempatTujuan] = (tMap[x.tempatTujuan] || 0) + 1; });
+                const top = Object.keys(tMap).reduce((a, b) => tMap[a] > tMap[b] ? a : b);
+                document.getElementById('statTopTujuan').innerText = top;
+            } else {
+                document.getElementById('statTopTujuan').innerText = '-';
+            }
+
+            if(dataToRender.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="text-center p-8 text-gray-500">Belum ada data perjalanan dinas tersimpan.</td></tr>`;
+                return;
+            }
+
+            dataToRender.forEach((item, index) => {
+                tbody.innerHTML += `
+                    <tr class="hover:bg-slate-800/40 transition">
+                        <td class="p-4 font-semibold text-gray-400">${index + 1}</td>
+                        <td class="p-4">
+                            <div class="font-bold text-white">${item.namaPejabat}</div>
+                            <div class="text-xs text-blue-400 mt-0.5">${item.jabatan}</div>
+                        </td>
+                        <td class="p-4 max-w-xs truncate text-gray-300" title="${item.maksudPerjalanan}">${item.maksudPerjalanan}</td>
+                        <td class="p-4 font-medium text-gray-200">${item.tempatTujuan}</td>
+                        <td class="p-4 text-xs text-gray-400">
+                            <span class="text-gray-200">${formatTgl(item.tglBerangkat)}</span> s/d<br>
+                            <span class="text-gray-200">${formatTgl(item.tglKembali)}</span> 
+                            <span class="text-blue-400 font-bold">(${item.lamaPerjalanan})</span>
+                        </td>
+                        <td class="p-4 text-xs text-gray-400">
+                            <div>ST: <span class="text-gray-200">${item.noSuratTugas}</span></div>
+                            <div>SPPD: <span class="text-gray-200">${item.noSppd}</span></div>
+                        </td>
+                        <td class="p-4 text-center">
+                            <div class="grid grid-cols-2 gap-1.5 text-[11px] max-w-[210px] mx-auto">
+                                <button onclick="printSuratTugas(${index})" class="bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 border border-blue-500/30 py-1 px-2 rounded-lg transition font-medium">Surat Tugas</button>
+                                <button onclick="printSppdDepan(${index})" class="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 py-1 px-2 rounded-lg transition font-medium">SPPD Depan</button>
+                                <button onclick="printSppdBelakang(${index})" class="bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 py-1 px-2 rounded-lg transition font-medium">SPPD Belakang</button>
+                                <button onclick="printLaporan(${index})" class="bg-purple-500/10 hover:bg-purple-500/20 text-purple-400 border border-purple-500/30 py-1 px-2 rounded-lg transition font-medium">Laporan Hasil</button>
+                            </div>
+                        </td>
+                        <td class="p-4 text-center">
+                            <div class="flex items-center justify-center gap-2">
+                                <button onclick="editData(${index})" class="p-2 rounded-lg hover:bg-blue-500/10 text-blue-400 transition" title="Edit Data">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                                </button>
+                                <button onclick="deleteData(${index})" class="p-2 rounded-lg hover:bg-rose-500/10 text-rose-400 transition" title="Hapus Data">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function openForm() {
+            document.getElementById('sppdForm').reset();
+            document.getElementById('editIndex').value = '';
+            document.getElementById('modalTitle').innerText = 'Form Input Data Perjalanan Dinas';
+            document.getElementById('namaDesa').value = 'PULIAS';
+            document.getElementById('tahunAnggaran').value = '2026';
+            document.getElementById('tempatBerangkat').value = 'Desa Pulias';
+            document.getElementById('alatAngkut').value = 'DARAT';
+            document.getElementById('pangkatGol').value = '-';
+            document.getElementById('tingkatSppd').value = 'Tingkat Desa/Kecamatan';
+            document.getElementById('formModal').classList.remove('hidden');
+        }
+
+        function closeForm() {
+            document.getElementById('formModal').classList.add('hidden');
+        }
+
+        function hitungLama() {
+            const tgl1 = new Date(document.getElementById('tglBerangkat').value);
+            const tgl2 = new Date(document.getElementById('tglKembali').value);
+            if(tgl1 && tgl2 && tgl2 >= tgl1) {
+                const diffTime = Math.abs(tgl2 - tgl1);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+                document.getElementById('lamaPerjalanan').value = diffDays + " Hari";
+            }
+        }
+
+        function saveData(e) {
+            e.preventDefault();
+            const index = document.getElementById('editIndex').value;
+            const data = {
+                namaDesa: document.getElementById('namaDesa').value,
+                tahunAnggaran: document.getElementById('tahunAnggaran').value,
+                noSuratTugas: document.getElementById('noSuratTugas').value,
+                noSppd: document.getElementById('noSppd').value,
+                tglSuratTugas: document.getElementById('tglSuratTugas').value,
+                dasarSurat: document.getElementById('dasarSurat').value,
+                namaPejabat: document.getElementById('namaPejabat').value,
+                jabatan: document.getElementById('jabatan').value,
+                pangkatGol: document.getElementById('pangkatGol').value || '-',
+                tingkatSppd: document.getElementById('tingkatSppd').value,
+                maksudPerjalanan: document.getElementById('maksudPerjalanan').value,
+                tempatBerangkat: document.getElementById('tempatBerangkat').value,
+                tempatTujuan: document.getElementById('tempatTujuan').value,
+                tglBerangkat: document.getElementById('tglBerangkat').value,
+                tglKembali: document.getElementById('tglKembali').value,
+                lamaPerjalanan: document.getElementById('lamaPerjalanan').value,
+                alatAngkut: document.getElementById('alatAngkut').value,
+                hasilPerjalanan: document.getElementById('hasilPerjalanan').value || 'Telah dilaksanakan sesuai petunjuk.',
+                tglLaporan: document.getElementById('tglLaporan').value || document.getElementById('tglKembali').value
+            };
+
+            if(index === '') {
+                db.push(data);
+            } else {
+                db[index] = data;
+            }
+
+            localStorage.setItem('sppd_db', JSON.stringify(db));
+            closeForm();
+            renderTable();
+        }
+
+        function editData(index) {
+            const item = db[index];
+            document.getElementById('editIndex').value = index;
+            document.getElementById('modalTitle').innerText = 'Edit Data Perjalanan Dinas';
+            
+            for(let key in item) {
+                if(document.getElementById(key)) {
+                    document.getElementById(key).value = item[key];
+                }
+            }
+            document.getElementById('formModal').classList.remove('hidden');
+        }
+
+        function deleteData(index) {
+            if(confirm('Yakin ingin menghapus data perjalanan dinas ini?')) {
+                db.splice(index, 1);
+                localStorage.setItem('sppd_db', JSON.stringify(db));
+                renderTable();
+            }
+        }
+
+        function formatTgl(tglStr) {
+            if(!tglStr) return '-';
+            const d = new Date(tglStr);
+            return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+        }
+
+        function searchTable() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = db.filter(item => 
+                item.namaPejabat.toLowerCase().includes(query) ||
+                item.maksudPerjalanan.toLowerCase().includes(query) ||
+                item.noSuratTugas.toLowerCase().includes(query) ||
+                item.tempatTujuan.toLowerCase().includes(query)
+            );
+            renderTable(filtered);
+        }
+
+        function exportData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `sppd_db_pulias_${new Date().toISOString().slice(0,10)}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
+        function importData(event) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if(Array.isArray(imported)) {
+                        db = imported;
+                        localStorage.setItem('sppd_db', JSON.stringify(db));
+                        renderTable();
+                        alert('Data berhasil di-restore!');
+                    } else {
+                        alert('Format file JSON tidak valid.');
+                    }
+                } catch(err) {
+                    alert('Gagal membaca file JSON.');
+                }
+            };
+            reader.readAsText(event.target.files[0]);
+        }
+
+        // LOGO GARUDA PANCASILA SVG HIGH-RESOLUTION EMBED
+        const garudaSvg = `<img src="https://upload.wikimedia.org/wikipedia/commons/9/90/National_emblem_of_Indonesia_Garuda_Pancasila.svg" style="width: 80px; height: auto; display: block; margin: 0 auto 10px auto;" alt="Lambang Garuda Pancasila">`;
+
+        // ================= TEMPLATE PRINT SURAT TUGAS =================
+        function printSuratTugas(index) {
+            const d = db[index];
+            const area = document.getElementById('printArea');
+            area.className = "times-font";
+            area.innerHTML = `
+                <div style="text-align: center; border-bottom: 3px double black; padding-bottom: 5px; margin-bottom: 25px;">
+                    ${garudaSvg}
+                    <h2 style="font-size: 16pt; font-weight: bold; margin: 0; letter-spacing: 1px;">KEPALA DESA ${d.namaDesa.toUpperCase()}</h2>
+                </div>
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <h3 style="font-size: 14pt; font-weight: bold; text-decoration: underline; margin: 0;">S U R A T    T U G A S</h3>
+                    <p style="margin-top: 3px;">Nomor : ${d.noSuratTugas}</p>
+                </div>
+                <div style="text-align: center; font-weight: bold; margin-bottom: 30px;">
+                    ======= KEPALA DESA ${d.namaDesa.toUpperCase()} =======
+                </div>
+                <p style="margin-bottom: 15px; font-size: 11pt;">Memberikan Tugas Kepada :</p>
+                <table style="width: 100%; margin-left: 20px; margin-bottom: 25px; font-size: 11pt;">
+                    <tr><td style="width: 30px;">1.</td><td style="width: 100px;">a. Nama</td><td style="width: 15px;">:</td><td><strong>${d.namaPejabat}</strong></td></tr>
+                    <tr><td></td><td>b. Jabatan</td><td>:</td><td>${d.jabatan}</td></tr>
+                </table>
+                <table style="width: 100%; margin-left: 20px; margin-bottom: 50px; font-size: 11pt;">
+                    <tr style="vertical-align: top;"><td style="width: 130px;">Untuk</td><td style="width: 15px;">:</td><td>${d.maksudPerjalanan}</td></tr>
+                </table>
+                <p style="margin-bottom: 60px; text-indent: 30px; font-size: 11pt;">Demikian Surat tugas ini diberikan untuk dilaksanakan dengan penuh rasa tanggung jawab.</p>
+                <div style="float: right; text-align: left; width: 260px; font-size: 11pt;">
+                    <p>Ditetapkan di : ${d.tempatBerangkat}<br>Pada tanggal : ${formatTgl(d.tglSuratTugas)}</p>
+                    <br>
+                    <p style="font-weight: bold; margin: 0;">KEPALA DESA ${d.namaDesa.toUpperCase()}</p>
+                    <br><br><br><br>
+                    <p style="border-bottom: 1px solid black; display: inline-block; font-weight: bold; margin: 0;">ALIYAS</p>
+                </div>
+            `;
+            triggerPrint();
+        }
+
+        // ================= TEMPLATE PRINT SPPD HALAMAN DEPAN =================
+        function printSppdDepan(index) {
+            const d = db[index];
+            const area = document.getElementById('printArea');
+            area.className = "times-font";
+            area.innerHTML = `
+                <div style="text-align: center; border-bottom: 3px double black; padding-bottom: 5px; margin-bottom: 10px;">
+                    ${garudaSvg}
+                    <h2 style="font-size: 15pt; font-weight: bold; margin: 0;">KEPALA DESA ${d.namaDesa.toUpperCase()}</h2>
+                </div>
+                <table style="width: 100%; font-size: 9.5pt; margin-bottom: 10px;">
+                    <tr>
+                        <td style="width: 60%;"></td>
+                        <td style="width: 15%;">Lembar</td><td>: </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Kode No.</td><td>: </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Nomor</td><td>: ${d.noSppd}</td>
+                    </tr>
+                </table>
+                <div style="text-align: center; margin-bottom: 15px;">
+                    <h3 style="font-size: 12pt; font-weight: bold; text-decoration: underline; margin: 0;">SURAT PERINTAH PERJALANAN DINAS</h3>
+                    <h4 style="font-size: 11pt; font-weight: bold; margin: 0;">( S P P D )</h4>
+                </div>
+                <table class="table-border" style="width: 100%; font-size: 10pt;" cellpadding="6">
+                    <tr>
+                        <td style="width: 4%; text-align: center;">1.</td>
+                        <td style="width: 46%;">Pejabat Yang Memberi Perintah</td>
+                        <td style="width: 50%;">KEPALA DESA ${d.namaDesa.toUpperCase()}</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">2.</td>
+                        <td>Nama Pegawai Yang Diperintah</td>
+                        <td><strong>${d.namaPejabat}</strong></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center; vertical-align: top;">3.</td>
+                        <td>
+                            a. Pangkat dan Golongan<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;(Menurut PP No. 6 Tahun 1997)<br>
+                            b. Jabatan<br>
+                            c. Tingkat Menurut Peraturan<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;Perjalanan Dinas
+                        </td>
+                        <td style="vertical-align: top;">
+                            a. ${d.pangkatGol}<br><br>
+                            b. ${d.jabatan}<br>
+                            c. ${d.tingkatSppd}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">4.</td>
+                        <td>Maksud Perjalanan Dinas</td>
+                        <td>${d.maksudPerjalanan}</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">5.</td>
+                        <td>Alat Pengangkutan Yang dipergunakan</td>
+                        <td>${d.alatAngkut}</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center; vertical-align: top;">6.</td>
+                        <td>
+                            a. Tempat Berangkat<br>
+                            b. Tempat Tujuan
+                        </td>
+                        <td style="vertical-align: top;">
+                            a. ${d.tempatBerangkat}<br>
+                            b. ${d.tempatTujuan}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center; vertical-align: top;">7.</td>
+                        <td>
+                            a. Lamanya Perjalanan Dinas<br>
+                            b. Tanggal Berangkat<br>
+                            c. Tanggal Harus Kembali
+                        </td>
+                        <td style="vertical-align: top;">
+                            a. ${d.lamaPerjalanan}<br>
+                            b. ${formatTgl(d.tglBerangkat)}<br>
+                            c. ${formatTgl(d.tglKembali)}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center; vertical-align: top;">8.</td>
+                        <td>Pengikut</td>
+                        <td>1. -<br>2. -</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center; vertical-align: top;">9.</td>
+                        <td>
+                            Pembebanan Anggaran<br>
+                            a. Instansi<br>
+                            b. Mata Anggaran
+                        </td>
+                        <td style="vertical-align: top;">
+                            <br>
+                            a. APBDes ${d.namaDesa} Tahun ${d.tahunAnggaran}<br>
+                            b. Operasional Perjalanan Dinas
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">10.</td>
+                        <td>Keterangan Lain-lain</td>
+                        <td></td>
+                    </tr>
+                </table>
+                <div style="float: right; margin-top: 15px; text-align: left; width: 260px; font-size: 10pt;">
+                    Dikeluarkan di : ${d.tempatBerangkat}<br>
+                    <u>Pada Tanggal : ${formatTgl(d.tglSuratTugas)}</u>
+                    <br><br>
+                    <strong>KEPALA DESA ${d.namaDesa.toUpperCase()}</strong>
+                    <br><br><br><br>
+                    <strong><u>ALIYAS</u></strong>
+                </div>
+            `;
+            triggerPrint();
+        }
+
+        // ================= TEMPLATE PRINT SPPD HALAMAN BELAKANG =================
+        function printSppdBelakang(index) {
+            const d = db[index];
+            const area = document.getElementById('printArea');
+            area.className = "times-font";
+            area.innerHTML = `
+                <div style="font-size: 10pt;">
+                    <div style="float: right; width: 48%; margin-bottom: 10px;">
+                        <table style="width: 100%;">
+                            <tr><td style="width: 110px;">Berangkat Dari</td><td>: ${d.tempatBerangkat}</td></tr>
+                            <tr><td colspan="2">( Tempat Kedudukan )</td></tr>
+                            <tr><td>Ke</td><td>: ${d.tempatTujuan}</td></tr>
+                            <tr><td>Pada Tanggal</td><td>: ${formatTgl(d.tglBerangkat)}</td></tr>
+                            <tr><td>Kepala</td><td>: PPKD</td></tr>
+                        </table>
+                        <br><br>
+                        <div style="text-align: center;"><u>______________________</u></div>
+                    </div>
+                    <div style="clear: both;"></div>
+
+                    <table class="table-border" style="width: 100%; font-size: 10pt;" cellpadding="8">
+                        <tr>
+                            <td style="width: 50%; vertical-align: top;">
+                                Tiba di : ${d.tempatTujuan}<br>
+                                Pada Tanggal : ${formatTgl(d.tglBerangkat)}<br>
+                                Kepala : .................................
+                                <br><br><br><br><br>
+                                <div style="text-align: center;"><u>______________________</u></div>
+                            </td>
+                            <td style="width: 50%; vertical-align: top;">
+                                Berangkat Dari : ${d.tempatTujuan}<br>
+                                Pada Tanggal : ${formatTgl(d.tglKembali)}<br>
+                                Ke : ${d.tempatBerangkat}<br>
+                                Kepala : .................................
+                                <br><br><br><br>
+                                <div style="text-align: center;"><u>______________________</u></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top;">
+                                Tiba di : .................................<br>
+                                Pada Tanggal : .................................<br>
+                                Kepala : .................................
+                                <br><br><br><br><br>
+                                <div style="text-align: center;"><u>______________________</u></div>
+                            </td>
+                            <td style="vertical-align: top;">
+                                Berangkat Dari : .................................<br>
+                                Pada Tanggal : .................................<br>
+                                Ke : .................................<br>
+                                Kepala : .................................
+                                <br><br><br><br>
+                                <div style="text-align: center;"><u>______________________</u></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top;">
+                                Tiba di : ${d.tempatBerangkat}<br>
+                                ( Tempat Kedudukan )<br>
+                                Pada Tanggal : ${formatTgl(d.tglKembali)}<br>
+                                Pejabat yang Berwenang/pejabat Lainnya yang ditunjuk
+                                <br><br><br><br>
+                                <div style="text-align: center;"><u>______________________</u></div>
+                            </td>
+                            <td style="vertical-align: top; text-align: justify;">
+                                Telah diperiksa dengan keterangan bahwa perjalanan tersebut, atas perintahnya dan semata-mata untuk kepentingan jabatan dalam waktu yang sesingkat-singkatnya.
+                                <br><br><br><br><br>
+                                <div style="text-align: center;"><u>______________________</u></div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            `;
+            triggerPrint();
+        }
+
+        // ================= TEMPLATE PRINT LAPORAN HASIL PERJALANAN DINAS =================
+        function printLaporan(index) {
+            const d = db[index];
+            const area = document.getElementById('printArea');
+            area.className = "times-font";
+            area.innerHTML = `
+                <div style="text-align: center; border-bottom: 2px solid black; padding-bottom: 5px; margin-bottom: 20px;">
+                    <h3 style="font-size: 13pt; font-weight: bold; margin: 0;">LAPORAN HASIL PERJALANAN DINAS</h3>
+                </div>
+                <p style="font-size: 11pt;">Kepada Yth : Kepala Desa ${d.namaDesa} Kecamatan Ogodeide</p>
+                <br>
+                <p style="font-size: 11pt;"><strong>I. <u>Dasar</u></strong></p>
+                <div style="margin-left: 20px; font-size: 11pt;">
+                    a. Surat Tugas Nomor &nbsp;&nbsp;: ${d.noSuratTugas}<br>
+                    b. SPPD Nomor &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: ${d.noSppd}<br>
+                    c. Surat Undangan Nomor : ${d.dasarSurat || '-'}
+                </div>
+                <br>
+                <p style="font-size: 11pt;"><strong>II. <u>Maksud dan Tujuan</u></strong></p>
+                <div style="margin-left: 20px; font-size: 11pt;">
+                    Maksud &nbsp;: ${d.maksudPerjalanan}<br>
+                    Tujuan &nbsp;&nbsp;&nbsp;: ${d.tempatTujuan}
+                </div>
+                <br>
+                <p style="font-size: 11pt;"><strong>III. <u>Waktu dan Tempat</u></strong></p>
+                <div style="margin-left: 20px; font-size: 11pt;">
+                    Pelaksanaan perjalanan dinas selama ${d.lamaPerjalanan} dari tanggal ${formatTgl(d.tglBerangkat)} s/d ${formatTgl(d.tglKembali)} bertempat di ${d.tempatTujuan}.
+                </div>
+                <br>
+                <p style="font-size: 11pt;"><strong>IV. <u>Hasil Perjalanan Dinas</u></strong></p>
+                <div style="margin-left: 20px; font-size: 11pt; text-align: justify; white-space: pre-line;">
+                    ${d.hasilPerjalanan}
+                </div>
+                <br><br>
+                <p style="font-size: 11pt;">Demikian Laporan ini kami buat, atas perhatian dan kerjasamanya diucapkan terima kasih.</p>
+                <br><br>
+                <div style="float: right; width: 320px; text-align: center; font-size: 10pt;">
+                    <p style="font-weight: bold; margin-bottom: 5px;">Yang Membuat Laporan</p>
+                    <table class="table-border" style="width: 100%; text-align: center;" cellpadding="5">
+                        <tr style="background: #f0f0f0;"><th>NO.</th><th>NAMA</th><th>TTD</th></tr>
+                        <tr><td>1</td><td>${d.namaPejabat}</td><td>1. .........</td></tr>
+                        <tr><td>2</td><td>-</td><td>2. .........</td></tr>
+                    </table>
+                </div>
+            `;
+            triggerPrint();
+        }
+
+        // ================= TEMPLATE PRINT REKAPITULASI (LANSKAP LEGAL) =================
+        function printRekapitulasi() {
+            if(db.length === 0) {
+                alert('Belum ada data rekapitulasi untuk dicetak!');
+                return;
+            }
+            const area = document.getElementById('printArea');
+            area.className = "times-font print-landscape";
+            
+            let rows = '';
+            db.forEach((d, i) => {
+                rows += `
+                    <tr>
+                        <td style="text-align: center;">${i+1}</td>
+                        <td>${d.namaPejabat}</td>
+                        <td>${d.maksudPerjalanan}</td>
+                        <td>${d.tempatTujuan}</td>
+                        <td>${formatTgl(d.tglSuratTugas)}</td>
+                        <td>${d.noSuratTugas}</td>
+                        <td>${d.noSppd}</td>
+                        <td>${formatTgl(d.tglBerangkat)}</td>
+                        <td>${formatTgl(d.tglKembali)}</td>
+                        <td>-</td>
+                    </tr>
+                `;
+            });
+
+            area.innerHTML = `
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <h2 style="font-size: 14pt; font-weight: bold; margin: 0;">REKAPITULASI PERJALANAN DINAS</h2>
+                    <h3 style="font-size: 13pt; font-weight: bold; margin: 0;">DESA PULIAS KECAMATAN OGODEIDE TAHUN 2026</h3>
+                </div>
+                <table class="table-border" style="width: 100%; font-size: 9.5pt;" cellpadding="6">
+                    <thead>
+                        <tr style="text-align: center; font-weight: bold;">
+                            <td>NO</td>
+                            <td>NAMA</td>
+                            <td>MAKSUD</td>
+                            <td>TUJUAN</td>
+                            <td>TANGGAL SURAT TUGAS DAN SPPD</td>
+                            <td>NOMOR SURAT TUGAS</td>
+                            <td>NOMOR SPPD</td>
+                            <td>TANGGAL BERANGKAT</td>
+                            <td>TANGGAL KEMBALI</td>
+                            <td>KET</td>
+                        </tr>
+                        <tr style="background: #e0e0e0; text-align: center; font-size: 8.5pt; font-weight: bold;">
+                            <td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rows}
+                    </tbody>
+                </table>
+            `;
+            triggerPrint();
+        }
+
+        function triggerPrint() {
+            document.getElementById('printArea').classList.remove('hidden');
+            window.print();
+            document.getElementById('printArea').classList.add('hidden');
+        }
+
+        // Initialize table on load
+        renderTable();
+    </script>
+</body>
+</html>
